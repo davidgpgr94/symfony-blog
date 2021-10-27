@@ -31,6 +31,6 @@ class JSONPlaceholderClient
             $options
         );
 
-        return $response->toArray();
+        return $response->toArray(false);
     }
 }

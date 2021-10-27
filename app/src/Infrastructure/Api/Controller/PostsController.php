@@ -2,9 +2,10 @@
 
 namespace App\Infrastructure\Api\Controller;
 
-use App\Application\GetPosts\GetPostsCommand;
+use App\Application\GetPosts\GetPostsQuery;
 use App\Application\GetPosts\GetPostsUseCase;
 use App\Domain\Post\PostId;
+use App\Infrastructure\Api\Response\Errors\PostNotFound;
 use App\Infrastructure\Api\Response\GetPostResponse;
 use App\Infrastructure\Api\Response\GetPostsResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,9 +25,9 @@ class PostsController extends BaseController
      */
     public function getAll(GetPostsUseCase $getPostsUseCase): JsonResponse
     {
-        $command = new GetPostsCommand();
+        $query = new GetPostsQuery();
 
-        $posts = $getPostsUseCase->search($command);
+        $posts = $getPostsUseCase->search($query);
 
         return $this->response(new GetPostsResponse($posts));
     }
@@ -40,8 +41,12 @@ class PostsController extends BaseController
      */
     public function getOne(int $id, GetPostsUseCase $getPostsUseCase): JsonResponse
     {
-        $command = new GetPostsCommand(new PostId($id));
-        $posts = $getPostsUseCase->search($command);
+        $query = new GetPostsQuery(new PostId($id));
+        $posts = $getPostsUseCase->search($query);
+
+        if (is_null($posts->getFirst())) {
+            return $this->response(new PostNotFound($id));
+        }
 
         return $this->response(new GetPostResponse($posts->getFirst()));
     }

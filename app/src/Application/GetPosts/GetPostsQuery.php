@@ -4,7 +4,7 @@ namespace App\Application\GetPosts;
 
 use App\Domain\Post\PostId;
 
-class GetPostsCommand
+class GetPostsQuery
 {
     private ?PostId $postId;
 

@@ -29,3 +29,6 @@ services:
 
     App\Infrastructure\Persistence\Post\JSONPlaceholderPostQueryRepository: ~
     App\Domain\Post\PostQueryRepository: '@App\Infrastructure\Persistence\Post\JSONPlaceholderPostQueryRepository'
+
+    App\Infrastructure\Persistence\Author\JSONPlaceholderAuthorQueryRepository: ~
+    App\Domain\Author\AuthorQueryRepository: '@App\Infrastructure\Persistence\Author\JSONPlaceholderAuthorQueryRepository'

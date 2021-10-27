@@ -16,7 +16,9 @@ class AuthorWebsite extends NotBlankStringValueObject
 
     private function ensureIsValidUrl(string $url)
     {
-        if (false === filter_var($url, FILTER_VALIDATE_URL)) {
+        $fixedUrl = strpos($url, 'http') !== 0 ? 'http://'.$url : $url;
+
+        if (false === filter_var($fixedUrl, FILTER_VALIDATE_URL)) {
             throw new InvalidArgumentException(sprintf('The url <%s> is not valid', $url));
         }
     }
