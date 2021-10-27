@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  nginx:
+    build: build/nginx
+    container_name: blog-nginx
+    volumes:
+      - ./app/:/var/www/symfony/
+    ports:
+      - 8001:80
+    networks:
+      - net-blog
+
+  php:
+    build:
+      context: ./build/php
+      dockerfile: Dockerfile
+    container_name: blog-php
+    environment:
+      APP_ENV: dev
+    volumes:
+      - ./app/:/var/www/symfony/
+    ports:
+      - 8002:8000
+    networks:
+      - net-blog
+
+networks:
+  net-blog:

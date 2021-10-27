@@ -1,0 +1,8 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+api_routes:
+  resource: ../src/Infrastructure/Api/Controller
+  type: annotation
+  prefix: '/apis'
