@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Persistence\Post;
 
 use App\Domain\Author\Author;
+use App\Domain\Post\Errors\PostNotExists;
 use App\Domain\Post\Post;
 use App\Domain\Post\PostId;
 use App\Domain\Post\PostQueryRepository;
@@ -34,13 +35,13 @@ class JSONPlaceholderPostQueryRepository implements PostQueryRepository
         return new PostsCollection($domainPostsArray);
     }
 
-    public function findById(PostId $id): ?Post
+    public function findById(PostId $id): Post
     {
         $remotePost = $this->jsonPlaceholderClient->request(new JSONPlaceholderPostsEndpointRequest($id));
 
-        return empty($remotePost)
-            ? null
-            : $this->parser->toDomain($remotePost);
+        if (empty($remotePost)) throw new PostNotExists($id);
+
+        return $this->parser->toDomain($remotePost);
     }
 
     public function findByAuthor(Author $author): PostsCollection

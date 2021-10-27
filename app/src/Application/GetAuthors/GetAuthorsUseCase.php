@@ -4,6 +4,7 @@ namespace App\Application\GetAuthors;
 
 use App\Domain\Author\AuthorQueryRepository;
 use App\Domain\Author\AuthorsCollection;
+use App\Domain\Author\Errors\AuthorNotExists;
 
 class GetAuthorsUseCase
 {
@@ -14,14 +15,17 @@ class GetAuthorsUseCase
         $this->authorRepository = $authorRepository;
     }
 
+    /**
+     * @param GetAuthorsQuery $query
+     * @return AuthorsCollection
+     * @throws AuthorNotExists
+     */
     public function search(GetAuthorsQuery $query): AuthorsCollection
     {
         if (!is_null($query->getAuthorId())) {
             $author = $this->authorRepository->findById($query->getAuthorId());
 
-            return is_null($author)
-                ? new AuthorsCollection([])
-                : new AuthorsCollection( [$author] );
+            return new AuthorsCollection( [$author] );
         }
 
         return $this->authorRepository->findAll();

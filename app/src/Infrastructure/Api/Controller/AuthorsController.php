@@ -5,6 +5,7 @@ namespace App\Infrastructure\Api\Controller;
 use App\Application\GetAuthors\GetAuthorsQuery;
 use App\Application\GetAuthors\GetAuthorsUseCase;
 use App\Domain\Author\AuthorId;
+use App\Domain\Author\Errors\AuthorNotExists;
 use App\Infrastructure\Api\Response\Errors\AuthorNotFound;
 use App\Infrastructure\Api\Response\GetAuthorResponse;
 use App\Infrastructure\Api\Response\GetAuthorsResponse;
@@ -42,12 +43,12 @@ class AuthorsController extends BaseController
     {
         $query = new GetAuthorsQuery(new AuthorId($id));
 
-        $authors = $getAuthorsUseCase->search($query);
+        try {
+            $authors = $getAuthorsUseCase->search($query);
 
-        if (is_null($authors->getFirst())) {
+            return $this->response(new GetAuthorResponse($authors->getFirst()));
+        } catch (AuthorNotExists $authorNotExists) {
             return $this->response(new AuthorNotFound($id));
         }
-
-        return $this->response(new GetAuthorResponse($authors->getFirst()));
     }
 }

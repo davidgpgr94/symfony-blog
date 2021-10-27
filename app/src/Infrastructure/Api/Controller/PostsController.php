@@ -2,10 +2,16 @@
 
 namespace App\Infrastructure\Api\Controller;
 
+use App\Application\GetPostAuthor\GetPostAuthorQuery;
+use App\Application\GetPostAuthor\GetPostAuthorUseCase;
 use App\Application\GetPosts\GetPostsQuery;
 use App\Application\GetPosts\GetPostsUseCase;
+use App\Domain\Author\Errors\AuthorNotExists;
+use App\Domain\Post\Errors\PostNotExists;
 use App\Domain\Post\PostId;
+use App\Infrastructure\Api\Response\Errors\AuthorNotFound;
 use App\Infrastructure\Api\Response\Errors\PostNotFound;
+use App\Infrastructure\Api\Response\GetAuthorResponse;
 use App\Infrastructure\Api\Response\GetPostResponse;
 use App\Infrastructure\Api\Response\GetPostsResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -42,12 +48,33 @@ class PostsController extends BaseController
     public function getOne(int $id, GetPostsUseCase $getPostsUseCase): JsonResponse
     {
         $query = new GetPostsQuery(new PostId($id));
-        $posts = $getPostsUseCase->search($query);
 
-        if (is_null($posts->getFirst())) {
+        try {
+            $posts = $getPostsUseCase->search($query);
+
+            return $this->response(new GetPostResponse($posts->getFirst()));
+        } catch (PostNotExists $postNotExists) {
             return $this->response(new PostNotFound($id));
         }
+    }
 
-        return $this->response(new GetPostResponse($posts->getFirst()));
+    /**
+     * @Route("/{postId}/author", methods={"GET"}, name="get_post_author", requirements={"postId"="\d+"})
+     *
+     * @param int $postId
+     * @param GetPostAuthorUseCase $getPostAuthorUseCase
+     * @return JsonResponse
+     */
+    public function getPostAuthor(int $postId, GetPostAuthorUseCase $getPostAuthorUseCase): JsonResponse
+    {
+        $query = new GetPostAuthorQuery(new PostId($postId));
+
+        try {
+            $author = $getPostAuthorUseCase->search($query);
+
+            return $this->response(new GetAuthorResponse($author));
+        } catch (PostNotExists $postNotExists) {
+            return $this->response(new PostNotFound($postId));
+        }
     }
 }
