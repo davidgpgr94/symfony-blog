@@ -6,3 +6,13 @@ api_routes:
   resource: ../src/Infrastructure/Api/Controller
   type: annotation
   prefix: '/api'
+  name_prefix: api_
+
+front_routes:
+  resource: ../src/Infrastructure/BlogFront/Controller
+  type: annotation
+  name_prefix: front_
+
+front_default_route:
+  path: /
+  controller: App\Infrastructure\BlogFront\Controller\PostsController::allPosts

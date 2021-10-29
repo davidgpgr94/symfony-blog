@@ -15,4 +15,9 @@ class StringValueObject implements SimpleValueObject
     {
         return $this->value;
     }
+
+    public function __toString(): string
+    {
+        return $this->value;
+    }
 }

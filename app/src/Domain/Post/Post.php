@@ -30,6 +30,13 @@ class Post implements Arrayable
         return $this->author;
     }
 
+    public function setAuthor(Author $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
     public function getTitle(): PostTitle
     {
         return $this->title;

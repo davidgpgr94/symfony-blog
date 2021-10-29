@@ -1,0 +1,39 @@
+<div class="card">
+    <div class="card-header">
+        <h4>Autor</h4>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">
+            <span class="font-weight-bold">{{ author.name|capitalize }}</span> <small class="font-italic text-muted">{{ author.username }}</small>
+        </h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+            <a href="{{ author.website|full_url }}">{{ author.website }}</a>
+        </h6>
+
+        <hr class="my-2">
+
+        <h5 class="card-title font-weight-bold">Dirección</h5>
+        <p class="card-text">{{ author.address.street }}, {{ author.address.suite }}</p>
+        <p class="card-text">{{ author.address.city }} ({{ author.address.zipcode}})</p>
+
+        <hr class="my-2">
+
+        <h5 class="card-title font-weight-bold">Lugar de trabajo</h5>
+        <blockquote class="blockquote">
+            <p class="small">{{ author.company.name }}</p>
+            <footer class="blockquote-footer">
+                <small class="text-muted">
+                    {{ author.company.catchPhrase }}
+                </small>
+            </footer>
+        </blockquote>
+    </div>
+    <div class="card-footer">
+        <a href="{{ author.email|lower|mail }}" class="card-text d-block text-reset">
+            {{ author.email|lower }}
+        </a>
+        <a href="{{ author.phone|phone }}" class="card-text d-block text-reset">
+            {{ author.phone }}
+        </a>
+    </div>
+</div>

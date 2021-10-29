@@ -20,6 +20,11 @@ class IntValueObject implements SimpleValueObject
         return $this->value;
     }
 
+    public function __toString(): string
+    {
+        return $this->value;
+    }
+
     private function ensureIsInt(int $value)
     {
         if (false === filter_var($value, FILTER_VALIDATE_INT)) {

@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title_page %}{{ title_page }}{% endblock %}
+
+{% set referer = app.request.headers.get('referer')|default('/') %}
+
+{% block body %}
+    <div class="row">
+        <article class="col-8">
+            {{ post.content }}
+        </article>
+        <aside class="col-4">
+            {{ include('posts/partials/author.html.twig', { author: post.author }) }}
+        </aside>
+    </div>
+    <footer class="row">
+        <a href="{{ referer }}">Atrás</a>
+    </footer>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% set title = 'Symfony Blog | 404 Not found' %}
+
+{% extends 'base.html.twig' %}
+
+{% block title_page %}404 Not found{% endblock %}
+
+{% set referer = app.request.headers.get('referer')|default('/') %}
+
+{% block body %}
+    <div class="jumbotron">
+        <h1 class="display-4">Página no encontrada</h1>
+        <p class="lead">{{ item_not_found|capitalize }} no encontrado</p>
+        <hr class="my-4">
+        <a href="{{ referer }}">Atrás</a>
+    </div>
+{% endblock %}
